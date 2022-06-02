@@ -1,0 +1,33 @@
+fragment CommitInfo on Commit {
+  zipballUrl
+  committedDate
+}
+
+query TagsQuery($owner: String!, $name: String!, $first: Int) {
+  rateLimit {
+    limit
+    remaining
+    cost
+  }
+  repository(owner: $owner, name: $name) {
+    refs(refPrefix: "refs/tags/", first: $first, orderBy: {field: TAG_COMMIT_DATE, direction: DESC}) {
+      totalCount
+      refs: nodes {
+        id
+        name
+        target {
+          ...CommitInfo
+          ...on Tag {
+            message
+            tagger {
+              createdAt: date
+            }
+            commit: target {
+              ...CommitInfo
+            }
+          }
+        }
+      }
+    }
+  }
+}
