@@ -15,14 +15,12 @@ internal class GithubClientTest {
     fun apolloClient(): ApolloClient {
         return ApolloClient.Builder()
             .networkTransport(QueueTestNetworkTransport())
-            //.addCustomScalarAdapter(GitTimestamp.type, com.github.spliffone.client.adapters.gitTimestampAdapter)
             .build()
     }
 
     @Test
     fun testGetTags() {
         val query = TagsQuery("test", "test", Optional.Present(100))
-        //(testResolver = myTestResolver)
         val data = TagsQuery.Data {
             repository {
                 refs {
@@ -37,7 +35,6 @@ internal class GithubClientTest {
                                     createdAt = createdAtString
                                 }
                                 commit = commitCommit {
-                                    __typename = "somet"
                                     committedDate = createdAtString
                                     zipballUrl = "https://codeload.github.com/test/test/legacy.zip/1"
                                 }
